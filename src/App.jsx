@@ -4,7 +4,7 @@ import PatientsList from './components/PatientsList';
 
 function App() {
 	return (
-		<div className='container mx-auto mt-16'>
+		<div className='container mx-auto mt-7'>
 			<Header />
 			<div className={'mt-12 md:flex'}>
 				<Form />
