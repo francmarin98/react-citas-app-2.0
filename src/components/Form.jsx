@@ -1,6 +1,10 @@
 import useForm from '../hooks/useForm';
+import { useState } from 'react';
+import PropTypes from 'prop-types';
+import Error from './Error';
 
-const Form = () => {
+const Form = ({ setPacientes }) => {
+	const [error, setError] = useState(false);
 	const { handleInputChange, resetFormState, formState } = useForm({
 		nombreMascota: '',
 		nombrePropietario: '',
@@ -15,7 +19,15 @@ const Form = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log(formState);
+
+		if ([nombreMascota, email, nombrePropietario, fechaAlta, sintomas].includes('')) {
+			setError(true);
+			return;
+		}
+
+		setError(false);
+		setPacientes((oldPacientes) => [...oldPacientes, formState]);
+
 		resetFormState();
 	};
 
@@ -28,6 +40,8 @@ const Form = () => {
 			</p>
 
 			<form className='form' onSubmit={handleSubmit}>
+
+				{error && <Error msgError={'Todos los campos son obligatorios'} />}
 
 				<div className='form-control'>
 					<label htmlFor='nombre-mascota' className='label-control'>
@@ -100,12 +114,16 @@ const Form = () => {
 
 				<input
 					type='submit'
-					className='bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-800 cursor-pointer transition-all'
+					className='bg-indigo-600 rounded-lg w-full p-3 text-white uppercase font-bold hover:bg-indigo-800 cursor-pointer transition-all'
 					value='Agregar Paciente'
 				/>
 
 			</form>
 		</div>);
+};
+
+Form.propTypes = {
+	setPacientes: PropTypes.func.isRequired
 };
 
 export default Form;
